@@ -3,6 +3,11 @@ title: "**Principal Component Analysis (PCA) to infer genetic population structu
 output: html_document
 ---
 
+
+> **IMPORTANT:**
+> When using PCA to infer genetic population structure, be careful with nonrandon missing data, which is very common in SNP data sets with historical DNA samples. Read [Yi & Latch 2022](https://doi.org/10.1111/1755-0998.13498) to understand how missing data can bias inference of population structure using PCA and use [SNPfiltR](https://github.com/DevonDeRaad/SNPfiltR) to prevent missing data from biasing your inferences.
+
+
 ### Load packages and read data
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 # Load relevant packages
@@ -67,3 +72,4 @@ ggplot(data = pca_df, aes(x = PC1, y = PC2, color = population)) +
 ggplot(data = pca_df, aes(x = PC1, fill = population)) +
   geom_density(alpha = 0.8, color = NA) +
   theme_bw()
+```
