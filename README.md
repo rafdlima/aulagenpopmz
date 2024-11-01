@@ -6,7 +6,7 @@ Este repositório contém todos os dados e códigos que nós usaremos durante a 
 
 > [!IMPORTANT]
 > Nós faremos todas as análises partindo do pressuposto que os dados já foram devidamente filtrados e otimizados para cada análise. Não falaremos sobre filtragem de SNPs.
-> Porém, acho importante ressaltar que a filtragens dos dados genéticos afeta todas as análises subsequentes e, portanto, é imprescindível saber o que está fazendo e dedicar tempo nessa etapa. O seguinte artigo é uma revisão extremamente bem escrita resumindo quase tudo sobre o assunto:
+> Porém, acho importante ressaltar que a filtragens dos dados genéticos afeta todas as análises subsequentes e, portanto, é imprescindível saber o que está fazendo e dedicar tempo nessa etapa que precede a análise dos dados. O seguinte artigo é uma revisão extremamente bem escrita resumindo quase tudo sobre o assunto:
 > [Hemstrom et al. 2024. Next-generation data filtering in the genomics era. Nature Reviews Genetics 25: 750-767.](https://doi.org/10.1038/s41576-024-00738-6)
 > O pacote [SNPfiltR](https://devonderaad.github.io/SNPfiltR/) no R é excelente para fazer a filtragem dos SNPs.
 
