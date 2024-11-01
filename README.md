@@ -11,7 +11,7 @@ Este repositório contém todos os dados e códigos que nós usaremos durante a 
 
 ## Tutoriais:
 1. [Principal Component Analysis (PCA)](https://rafdlima.github.io/aulagenpopmz/vignettes/PCA.html)
-2. x
+2. [Discriminant Analysis of Principal Component (DAPC)](https://rafdlima.github.io/aulagenpopmz/vignettes/DAPC.html)
 3. x
 4. x
 5. x
