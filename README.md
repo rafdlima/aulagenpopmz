@@ -14,4 +14,6 @@ Este repositório contém todos os dados e códigos que nós usaremos durante a 
 2. [Discriminant Analysis of Principal Component (DAPC)](https://rafdlima.github.io/aulagenpopmz/vignettes/DAPC.html)
 3. x
 4. [Fixation index (*F*<sub>ST</sub>)](https://rafdlima.github.io/aulagenpopmz/vignettes/FST.html)
-5. x
+5. [Triangle plots](https://rafdlima.github.io/aulagenpopmz/vignettes/triangle.html)
+
+## Literature:
