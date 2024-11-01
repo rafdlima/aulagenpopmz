@@ -93,7 +93,7 @@ scatter(dapc.kmeans.k4,
         leg = TRUE)
 ```
 
-### Plot using default functions from the package 'ggplot'
+### Plot using 'ggplot'
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 # Extract relevant information from the output into a new dataframe
 dapc.kmeans.k4.df <- data.frame(individual = row.names(dapc.kmeans.k4$ind.coord),
