@@ -1,6 +1,6 @@
 # Aula de análises genéticas populacionais
 ### (segunda-feira 04/11/2024)
-==================================================================================
+
 
 Este repositório contém todos os dados e códigos que nós usaremos durante a aula. Nós usaremos como exemplo um conjunto de dados com 45 indivíduos e 553 SNPs, e exploraremos cinco tipos de análises amplamente usadas para estudar a estrutura genética de populaçõs.
 
