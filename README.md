@@ -6,7 +6,7 @@ Este repositório contém todos os dados e códigos que nós usaremos durante a 
 
 
 > **Importante:**
-> Nós faremos todas as análises partindo do pressuposto que vocês já filtraram os dados de vocês e salvaram conjuntos de SNPs otimizados para cada análise. Não falaremos sobre filtragem de SNPs. Para esse assunto, vejam a literatura que eu recomendei, especialmente [Hemstrom et al. 2024](https://doi.org/10.1038/s41576-024-00738-6).
+> Nós faremos todas as análises partindo do pressuposto que vocês já filtraram os dados de vocês e salvaram conjuntos de SNPs otimizados para cada análise. Não falaremos sobre filtragem de SNPs. Para esse assunto, vejam a literatura que eu recomendei, especialmente [Hemstrom et al. 2024](https://doi.org/10.1038/s41576-024-00738-6), e usem o pacote [SNPfiltR](https://devonderaad.github.io/SNPfiltR/).
 
 
 ## Tutoriais:
