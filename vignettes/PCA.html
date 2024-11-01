@@ -354,6 +354,14 @@ to infer genetic population structure</strong></h1>
 </div>
 
 
+<blockquote>
+<p><strong>IMPORTANT:</strong> When using PCA to infer genetic
+population structure, be careful with nonrandon missing data, which is
+very common in SNP data sets with historical DNA samples. Read <a href="https://doi.org/10.1111/1755-0998.13498">Yi &amp; Latch 2022</a>
+to understand how missing data can bias inference of population
+structure using PCA and use <a href="https://github.com/DevonDeRaad/SNPfiltR">SNPfiltR</a> to prevent
+missing data from biasing your inferences.</p>
+</blockquote>
 <div id="load-packages-and-read-data" class="section level3">
 <h3>Load packages and read data</h3>
 <pre class="r"><code># Load relevant packages
