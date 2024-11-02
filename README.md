@@ -31,7 +31,7 @@ Este repositório contém todos os dados e códigos que nós usaremos durante a 
 - [Miller et al. 2020. The influence of a priori grouping on inference of genetic clusters: simulation study and literature review of the DAPC method. Heredity 125: 269-280.](https://doi.org/10.1038/s41437-020-0348-2)
 - [Thia 2023. Guidelines for standardizing the application of discriminant analysis of principal components to genotype data. Molecular Ecology Resources 23: 523-538.](https://doi.org/10.1111/1755-0998.13706)
 
-### STRUCTURE e afins
+### sNMF e afins
 - [Pritchard et al. 2000. Inference of population structure using multilocus genotype data. Genetics 155: 945-959.](https://doi.org/10.1093/genetics/155.2.945)
 - [Frichot et al. 2014. Fast and efficient estimation of individual ancestry coefficients. Genetics 196: 973-983.](https://doi.org/10.1534/genetics.113.160572)
 - [Janes et al. 2017. The K = 2 conundrum. Molecular Ecology 26: 3594-3602.](https://doi.org/10.1111/mec.14187)
