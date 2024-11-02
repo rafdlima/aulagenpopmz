@@ -1,0 +1,146 @@
+---
+title: "**Inferring genetic population structure with sparse Nonnegative Matrix Factorization (sNMF)**"
+output: html_document
+---
+
+# STEP 1: Prepare data, run sNMF, and load outputs
+
+### Load relevant packages
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(vcfR)
+library(LEA)
+```
+
+### Create directories to store outputs
+
+The *snmf* function writes outputs to your computer rather than saving them as objects within R. Therefore, we will first create directories to store outputs.
+
+We typically run multiple sNMF analyses using different values of the alpha regularization parameter (more about this parameter below) to explore parameter space before deciding on the best values. Therefore, we will need to create multiple directories, one for each value of alpha. In the example below, we will explore results using two different values of alpha.
+
+```{r, eval=FALSE}
+# Create new directory for outputs from the sNMF run using alpha = 50
+dir.create("C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a50")
+
+# Create new directory for outputs from the sNMF run using alpha = 100
+dir.create("C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a100")
+```
+
+### Prepare data
+
+sNMF requires a *.geno* file as input. We will use the function *vcf2geno* to convert the SNP data from *.vcf* to *.geno*.
+
+The *snmf* function saves outputs in the directory where the input file is located. Therefore, we need to create multiple *.geno* files and start each sNMF run from a different directory, otherwise the output files will be overwritten!
+
+```{r, eval=FALSE}
+# Define path for SNP data
+pathvcf <- "C:/Users/rafae/Downloads/aulagenpopmz/data/snpdata.vcf"
+
+# Convert the SNP data, saving one geno file in each directory
+vcf2geno(input.file = pathvcf, output.file = "C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a50/snpdata.geno")
+
+vcf2geno(input.file = pathvcf, output.file = "C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a100/snpdata.geno")
+```
+
+### Run sNMF for each alpha value
+
+**What is alpha?** Alpha is a nonnegative regularization parameter that penalizes intermediate ancestry coefficients. Values of alpha > 0 tend to reduce the variance of individual ancestry coefficient estimates and force irrelevant estimates to zero. In describing sNMF, [Frichot et al. (2014)](https://doi.org/10.1534/genetics.113.160572) showed that the influence of this parameter is greatest for the small genomic data sets (< 10,000 SNPs), with large values of alpha generally improving the estimation of ancestry coefficients when data sets are small. It is advisable to examine results under multiple values of the alpha regularization parameter to obtain the best estimates of individual ancestry coefficients. Smaller cross-entropy values generally indicate better algorithm outputs and estimates. Therefore, the best value of alpha is the one associated with the smallest cross-entropy value. For example, if you performed four sNMF runs each using a different value of alpha, you should typically keep the results of the run with the smallest cross-entropy values.
+
+NOTE: We will typically run snmf using 100 repetitions or more. But this takes some time (~20-40 min for 100 repetitions, depending on your computer). Below we are using only 20 repetitions to illustrate how the analysis works. Importantly, we don't need nor want to rerun *snmf* every time we need to revisit results or redo plots. Instead, it's better to reread the output files into R once the analysis has already been performed. (We do this below.)
+
+```{r, eval=FALSE}
+snmf_a50 <- snmf(input.file = "C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a50/snpdata.geno",
+                   K = 1:10,
+                   entropy = TRUE,
+                   repetitions = 20,
+                   project = "new",
+                   alpha = 50)
+
+snmf_a100 <- snmf(input.file = "C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a100/snpdata.geno",
+                   K = 1:10,
+                   entropy = TRUE,
+                   repetitions = 20,
+                   project = "new",
+                   alpha = 100)
+```
+
+### Load sNMF outputs (OPTIONAL)
+
+> NOTE: We don't need to run this code chunk if we have just ran the code above, because the outputs would already be here in the R environment. But if we are reexamining results or redoing plots, we can read the outputs as shown below.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# For each sNMF run, set the working directory where the output is stored and read it into R
+setwd("C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a50")
+snmf_a50 <- load.snmfProject("snpdata.snmfProject")
+
+setwd("C:/Users/rafae/Downloads/aulagenpopmz/data/snmf/snmf_a100")
+snmf_a100 <- load.snmfProject("snpdata.snmfProject")
+```
+
+### Read in sample info to reorder samples in the bar plot (OPTIONAL)
+
+We sometimes want the samples in a specific order (e.g. west to east, or north to south) in the bar plot. One way of doing that is having your samples numbered in the order you want in a spreadsheet, and using this information to reorder your samples in the bar plot.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# Read in sample info file and reorder it according to the SNP dataset you used as input for the analysis
+setwd("C:/Users/rafae/Downloads/aulagenpopmz/data")
+
+sample.info <- read.table("sampleinfo.csv", sep = ",", header = TRUE)
+
+snpdata.vcf <- read.vcfR("snpdata.vcf")
+
+sample.info <- sample.info[match(colnames(snpdata.vcf@gt)[-1], sample.info$id), ]
+
+remove(snpdata.vcf)
+```
+
+# STEP 2: Examine results
+
+### Cross-entropy plot
+
+The cross-entropy plot helps us choosing the number of clusters (*k*) that best explains our data. The statistically optimal *k* is that associated with the lowest cross-entropy value. But note that, although this value of *k* is statistically optimal, it is not necessarily the most biologically meaningful. [You should examine and discuss all *k* values that warrant a biological interpretation!](https://onlinelibrary.wiley.com/doi/full/10.1111/mec.13243#:~:text=are%20therefore%20meaningless.-,Only%20interpreting%20a%20single%20value%20of%20k,-Clustering%20data%20is)
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# Plot cross-entropy for the snmf run using alpha 50
+plot(snmf_a50)
+
+# Plot cross-entropy for the snmf run using alpha 100
+plot(snmf_a100)
+```
+
+Once you have decided how many clusters there are in your data, you can examine the results under that value of *k*.
+
+### Bar plot of ancestry coefficients
+
+The sNMF analysis not only helps inferring *k* but also provides individual ancestry coefficients. Individuals are probabilistically assigned to one or more genetic clusters depending on whether their genotypes are "pure" or "admixed."
+
+Below we will examine results from the sNMF run using alpha 100 at *k* = 4. This is just to show how to do it. You should examine results at as many values of *k* as make sense for your data.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# First identify the best replicate run for the chosen k value
+ce.a100 <- cross.entropy(snmf_a100, K = 4)
+bestrun.a100 <- which.min(ce.a100)
+
+# Default bar plot using the 'barchart' function from the package LEA (alternatively, you could extract relevant info from snmf_a100 into a dataframe and plot using ggplot)
+par(mar = c(4.1, 4.1, 0.5, 0.2))
+barchart(snmf_a100,
+         K = 4,
+         run = bestrun.a100,
+         col = c("red","lightblue","olivedrab","gold"),
+         xlab = "Individuals",
+         ylab = "Ancestry coefficients",
+         las = 2,
+         space = 0)
+```
+
+### Other plots outside R (OPTIONAL)
+
+We could export a spreadsheet with the individual ancestry coefficients to plot as piecharts in a map, for example.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# Get the Q-matrix containing the ancestry coefficients from the best replicate run
+Qmatrix.a100 <- Q(snmf_a100, K = 4, run = bestrun.a100)
+
+# Then you could combine this 'Qmatrix.a100' with relevant sample info (e.g. coordinates) in a single table to plot in QGIS (not shown here)
+```
+
+> **NOTE: You typically need to check for substructure!** [Population structure can be hierarchical](https://onlinelibrary.wiley.com/doi/10.1111/mec.14187), so you typically need to perform additional sNMF runs on initially identified clusters to test for substructure. For brevity, we aren't doing this here. But you will often need to do it. To do so, you will basically subset the SNP dataset into multiple datasets, each containing only the samples of each initially identified cluster, and then perform sNMF on each of the resuling datasets. You may use functions from the packages [vcfR](https://doi.org/10.1111/1755-0998.12549) and [SNPfiltR](https://github.com/DevonDeRaad/SNPfiltR) to do this.
