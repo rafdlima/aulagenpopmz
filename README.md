@@ -13,7 +13,7 @@ Este repositório contém todos os dados e códigos que nós usaremos durante a 
 
 ## Tutoriais:
 1. [Principal Component Analysis (PCA)](https://rafdlima.github.io/aulagenpopmz/vignettes/PCA.html)
-2. [Discriminant Analysis of Principal Component (DAPC)](https://rafdlima.github.io/aulagenpopmz/vignettes/DAPC.html)
+2. [Discriminant Analysis of Principal Components (DAPC)](https://rafdlima.github.io/aulagenpopmz/vignettes/DAPC.html)
 3. [Sparse Nonnegative Matrix Factorization (sNMF)](https://rafdlima.github.io/aulagenpopmz/vignettes/sNMF.html)
 4. [Fixation index (*F*<sub>ST</sub>)](https://rafdlima.github.io/aulagenpopmz/vignettes/FST.html)
 5. [Triangle plots](https://rafdlima.github.io/aulagenpopmz/vignettes/triangle.html)
