@@ -3,6 +3,13 @@ title: "**Discriminant Analysis of Principal Components (DAPC) for inferring gen
 output: html_document
 ---
 
+<br>
+**What is the difference between Principal Component Analysis (PCA) and Discriminant Analysis (DA)?** **PCA** searches for the direction showing the largest total variance (*doted arrow*), whereas **DA** maximizes the separation between groups (*plain arrow*) while minimizing variation within group. (Image from [Jombart et al. 2010](https://doi.org/10.1186/1471-2156-11-94))
+<br>
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1186%2F1471-2156-11-94/MediaObjects/12863_2010_Article_841_Fig1_HTML.jpg?as=webp" alt="Image caption" width="400" />
+<br>
+
+
 ### Load packages and read data
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 # Load relevant packages
