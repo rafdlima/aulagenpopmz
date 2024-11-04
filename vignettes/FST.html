@@ -355,8 +355,81 @@ differentiation with the fixation index
 </div>
 
 
-<div id="load-packages-and-read-data" class="section level3">
-<h3>Load packages and read data</h3>
+<div id="understanding-fst" class="section level3">
+<h3>Understanding <em>F</em><sub>ST</sub></h3>
+<p><em>F</em><sub>ST</sub> measures genetic differentiation between
+populations. It ranges from 0 (no differentiation) to 1 (complete
+differentiation).</p>
+<p>Many different estimators of <em>F</em><sub>ST</sub> have been
+proposed. Let’s first apply the simplest formulation to illustrate how
+it is calculated, based on some very simple data sets where we can
+visually assess allele frequencies. Then we will use a more complex
+estimator that is more commonly used for real data sets.</p>
+<p>Let’s consider three different scenarios, each with two populations
+being compared. In the first scenario, the two populations have
+identical allele compositions (AAABBB):</p>
+<pre class="r"><code>scenario1 &lt;- data.frame(
+  population = rep(c(&quot;Population 1&quot;, &quot;Population 2&quot;), each = 6),
+  allele = c(&quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;)
+)</code></pre>
+<p>In the second scenario, Population 1 has AABBBB and Population 2 has
+AAAABB:</p>
+<pre class="r"><code>scenario2 &lt;- data.frame(
+  population = rep(c(&quot;Population 1&quot;, &quot;Population 2&quot;), each = 6),
+  allele = c(&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;)
+)</code></pre>
+<p>In the third scenario, the two populations have entirely different
+allele compositions. Population 1 has AAAAAA and Population 2 has
+BBBBBB:</p>
+<pre class="r"><code>scenario3 &lt;- data.frame(
+  population = rep(c(&quot;Population 1&quot;, &quot;Population 2&quot;), each = 6),
+  allele = c(&quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;)
+)</code></pre>
+<p><em>F</em><sub>ST</sub> can be calculated as:</p>
+<p><span class="math display">\[
+F_{ST} = \frac{\pi_{between} - \pi_{within}}{\pi_{between}}
+\]</span></p>
+<p>where:<br />
+- <span class="math inline">\(\pi_{within}\)</span> is the average
+genetic diversity within populations.<br />
+- <span class="math inline">\(\pi_{between}\)</span> is the genetic
+diversity between populations.</p>
+<p>Define an R function to calculate <em>F</em><sub>ST</sub> using this
+formula and apply it to our three scenarios.</p>
+<pre class="r"><code># Define the function to calculate FST
+calculate_fst &lt;- function(pop_df) {
+  # Calculate allele frequencies within each population
+  pop1_freq &lt;- mean(pop_df$allele[pop_df$population == &quot;Population 1&quot;] == &quot;A&quot;)
+  pop2_freq &lt;- mean(pop_df$allele[pop_df$population == &quot;Population 2&quot;] == &quot;A&quot;)
+  
+  # Within and between population allele diversity
+  pi_within &lt;- (pop1_freq * (1 - pop1_freq) + pop2_freq * (1 - pop2_freq)) / 2
+  pi_between &lt;- (pop1_freq * (1 - pop2_freq) + pop2_freq * (1 - pop1_freq)) / 2
+  
+  # FST formula
+  fst &lt;- (pi_between - pi_within) / pi_between
+  return(round(fst, 2))
+}
+
+# Calculate FST for each scenario
+calculate_fst(scenario1)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>calculate_fst(scenario2)</code></pre>
+<pre><code>## [1] 0.2</code></pre>
+<pre class="r"><code>calculate_fst(scenario3)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>In the first scenario, the two populations differ 0% in the genetic
+variation we are observing. In the second scenario, the two populations
+differ 20%. And in the third, they differ 100%.</p>
+<p>In real data, we often use more complex estimators of
+<em>F</em><sub>ST</sub>. Below we will use the ‘stamppFst’ function from
+the package ‘StAMPP’ to apply <a href="https://doi.org/10.2307/2408641">Weir &amp; Cockerham’s
+<em>F</em><sub>ST</sub> estimator</a> to our real SNP data set. This
+estimator accounts for sample sizes, and it is one of the most widely
+used today.</p>
+</div>
+<div id="load-packages-and-data" class="section level3">
+<h3>Load packages and data</h3>
 <pre class="r"><code># Load relevant packages
 library(vcfR)
 library(adegenet)
